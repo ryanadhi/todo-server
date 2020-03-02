@@ -8,15 +8,22 @@ module.exports = (sequelize, DataTypes) => {
       type : DataTypes.BOOLEAN,
       defaultValue : false
     },
-    due_date: {
-      type : DataTypes.DATE,
-      allowNull : false
-    } 
+    due_date: DataTypes.DATE
   }, {
     validate : {
       titleIsNull (){
         if (!this.title){
           throw new Error('Title cannot be empty');
+        }
+      },
+      dueDateIsNull (){
+        if (!this.due_date){
+          throw new Error('Due Date cannot be empty');
+        }
+      },
+      checkDueDate() {
+        if (new Date(this.due_date) < new Date()){
+          throw new Error('You must select date in the future');
         }
       }
     },

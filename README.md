@@ -102,7 +102,7 @@
  
 * **Error Response:**
 
-  * **Code:** 404 NOT FOUND <br />
+  * **Code:** 404 <br />
     **Content:** `{ error : "User doesn't exist" }`
 
 
