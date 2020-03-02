@@ -16,14 +16,13 @@ module.exports = (sequelize, DataTypes) => {
           throw new Error('Title cannot be empty');
         }
       },
-      dueDateIsNull (){
+      checkDueDate (){
         if (!this.due_date){
           throw new Error('Due Date cannot be empty');
-        }
-      },
-      checkDueDate() {
-        if (new Date(this.due_date) < new Date()){
-          throw new Error('You must select date in the future');
+        } else {
+          if (new Date(this.due_date) < new Date()){
+            throw new Error('You must select date in the future');
+          }
         }
       }
     },
