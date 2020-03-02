@@ -71,15 +71,13 @@ class TodoController {
         Todo.update (updateTodo, {
             where : {
                 id : idToUpdate
-            }
+            },
+            returning: true
         })
-            .then (() => {
-                return Todo.findByPk (idToUpdate)
-            })
-
             .then ( updatedTodo => {
+                
                 res.status (200).json({
-                    data : updatedTodo,
+                    data : updatedTodo[1],
                     message : 'updated'
                 })
             })

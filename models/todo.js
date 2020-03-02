@@ -8,8 +8,25 @@ module.exports = (sequelize, DataTypes) => {
       type : DataTypes.BOOLEAN,
       defaultValue : false
     },
-    due_date: DataTypes.DATE
+    due_date: {
+      type : DataTypes.DATE,
+      allowNull : false
+    } 
   }, {
+    validate : {
+      titleIsNull (){
+        if (!this.title){
+          throw new Error('Title cannot be empty');
+        }
+      }
+    },
+    hooks : {
+      beforeValidate: (todo, options) => {
+        if (!todo.description){
+          todo.description = todo.title
+        }
+      }
+    },
     sequelize,
     modelName : 'Todo'
   })
