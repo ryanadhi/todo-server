@@ -12,7 +12,7 @@ class TodoController {
 
             .catch ( err => {
                 res.status (500).json({
-                    error : err
+                    error : `Internal Server Error`
                 })
             })
     }
@@ -36,7 +36,8 @@ class TodoController {
 
             .catch ( err => {
                 res.status (500).json({
-                    error : err
+                    // error : `Internal Server Error`
+                    err
                 })
             })
     }
@@ -46,14 +47,20 @@ class TodoController {
 
         Todo.findByPk (idToFind)
             .then (todo => {
-                res.status (200).json({
-                    data: todo
-                })
+                if (todo){
+                    res.status (200).json({
+                        data: todo
+                    })
+                } else {
+                    res.status (404).json({
+                        error : `Not Found`
+                    })
+                }
             })
 
             .catch ( err => {
                 res.status (500).json({
-                    error : err
+                    error : `Internal Server Error`
                 })
             })
     }
@@ -75,16 +82,22 @@ class TodoController {
             returning: true
         })
             .then ( updatedTodo => {
-                
-                res.status (200).json({
-                    data : updatedTodo[1],
-                    message : 'updated'
-                })
+
+                if (!updateTodo[1]){
+                    res.status (404).json({
+                        error : `Not Found`
+                    })
+                } else {
+                    res.status (200).json({
+                        data : updatedTodo[1],
+                        message : 'updated'
+                    })
+                }
             })
 
             .catch ( err => {
                 res.status (500).json({
-                    error : err
+                    error : `Internal Server Error`
                 })
             })
     }
@@ -95,15 +108,19 @@ class TodoController {
         Todo.findByPk (idToDelete)
             .then ( foundTodo => {
 
-                let deletedTodo = foundTodo ;
-
-                Todo.destroy({
-                    where : {
-                        id : idToDelete
-                    }
-                })
-
-                return deletedTodo
+                if (!foundTodo){
+                    res.status (404).json({
+                        error : `Not Found`
+                    })
+                } else {
+                    let deletedTodo = foundTodo ;
+                    Todo.destroy({
+                        where : {
+                            id : idToDelete
+                        }
+                    })
+                    return deletedTodo
+                }
             })
 
             .then ( deletedTodo => {
@@ -115,7 +132,7 @@ class TodoController {
 
             .catch ( err => {
                 res.status (500).json({
-                    error : err
+                    error : `Internal Server Error`
                 })
             })
     }
