@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       type : DataTypes.BOOLEAN,
       defaultValue : false
     },
-    due_date: DataTypes.DATE
+    due_date: DataTypes.DATE,
+    UserId : DataTypes.INTEGER
   }, {
     validate : {
       titleIsNull (){
@@ -26,19 +27,12 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    hooks : {
-      beforeValidate: (todo, options) => {
-        if (!todo.description){
-          todo.description = todo.title
-        }
-      }
-    },
     sequelize,
     modelName : 'Todo'
   })
 
   Todo.associate = function(models) {
-    // associations can be defined here
+    Todo.belongsTo(models.User)
   };
   return Todo;
 };

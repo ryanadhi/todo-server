@@ -34,12 +34,13 @@ class TodoController {
                 })
             })
 
-            .catch ( err => {
-                res.status (500).json({
-                    // error : `Internal Server Error`
-                    err
-                })
-            })
+            .catch (next)
+            // .catch ( err => {
+            //     res.status (500).json({
+            //         // error : `Internal Server Error`
+            //         err
+            //     })
+            // })
     }
 
     static findByPk ( req, res) {

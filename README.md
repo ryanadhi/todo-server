@@ -103,7 +103,7 @@
 * **Error Response:**
 
   * **Code:** 404 <br />
-    **Content:** `{ error : "User doesn't exist" }`
+    **Content:** `{ error : "Not found" }`
 
 
 **Update ToDo**
