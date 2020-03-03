@@ -1,4 +1,5 @@
 const { Todo } = require ('../models/index') ;
+const axios = require ('axios').default
 
 class TodoController {
     static findAll (req, res, next) {
@@ -31,8 +32,20 @@ class TodoController {
 
         Todo.create (newTodo)
             .then ( todo => {
+
+                const giphy = axios.create ({
+                    baseURL: 'http://api.giphy.com/v1/gifs/'
+                })
+
+                const query = todo.title.replace(/ /g, "+") ;
+                const key = process.env.GIPHY_KEY ;
+                
+                return giphy.get(`\search?q=${query}&api_key=${key}&limit=2`)
+            })
+
+            .then ( gif => {
                 res.status(201).json({
-                    data : todo,
+                    imageURL : gif.data,
                     message : 'success'
                 })
             })

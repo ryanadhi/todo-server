@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ryanadhi/todo-server#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
