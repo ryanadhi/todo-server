@@ -45,7 +45,7 @@ class TodoController {
 
             .then ( gif => {
                 res.status(201).json({
-                    imageURL : gif.data,
+                    imageURL : gif.data.data[0].images.original.url,
                     message : 'success'
                 })
             })
