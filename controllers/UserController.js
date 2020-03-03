@@ -1,9 +1,10 @@
 const { User } = require ('../models/index') ;
 const { verifyPassword } = require ('../helpers/bcrypt') ;
+const { getToken } = require ('../helpers/jwt')
 
 class UserController {
     
-    static create (req,res) {
+    static create (req,res, next) {
         const { email, password } = req.body ;
 
         User.create ( {
@@ -20,11 +21,12 @@ class UserController {
                 })
             })
             .catch ( err => {
-                res.status(500).json({err})
+                // res.status(500).json({err})
+                next(err)
             } )
     }
 
-    static login (req,res){
+    static login (req,res, next){
         const { email, password } = req.body ;
 
         User.findOne ( {
@@ -43,22 +45,32 @@ class UserController {
                             id : foundUser.id,
                             email : foundUser.email
                         }
+
+                        const token = getToken (payload)
     
                         res.status(200).json({
-                            payload : payload
+                            token : token
                         })
 
                     } else {
                         // wrong password
+                        next ( {
+                            status : 400,
+                            message : 'Wrong Email / Password'
+                        })
                     }
 
 
                 } else {
                     // email not found
+                    next ( {
+                        status : 400,
+                        message : 'Wrong Email / Password'
+                    })
                 }
             })
             .catch ( err => {
-                res.status(500).json({err})
+                res.status(500).json('eror dari login')
             })
 
 
