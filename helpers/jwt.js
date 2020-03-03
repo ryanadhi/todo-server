@@ -5,7 +5,6 @@ function getToken ( payload) {
 }
 
 function verifyToken ( token ) {
-    console.log(token);
     return jwt.verify(token, process.env.JWTKEY)
 }
 

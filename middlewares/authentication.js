@@ -15,19 +15,21 @@ module.exports = (req,res,next) => {
                 if (foundUser) {
                     next()
                 } else {
-                    // next ( {
-                    //     status : 400,
-                    //     message : 'Bad request'
-                    // })
                     // user not found, please login again
-                    res.status (500).json('Please login')
+                    next ( {
+                        status : 401,
+                        message : 'You are not authenticated'
+                    })
                 }
             })
             .catch ( err => {
-                res.status (500).json('error dari authentication1')
+                next ()
             })
 
     } catch(err) {
-        res.status (500).json('error dari authentication2')
+        next ( {
+            status : 401,
+            message : 'You are not authenticated'
+        })
     }
 }

@@ -21,7 +21,6 @@ class UserController {
                 })
             })
             .catch ( err => {
-                // res.status(500).json({err})
                 next(err)
             } )
     }
@@ -70,7 +69,7 @@ class UserController {
                 }
             })
             .catch ( err => {
-                res.status(500).json('eror dari login')
+                next()
             })
 
 

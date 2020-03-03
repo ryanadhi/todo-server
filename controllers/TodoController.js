@@ -1,7 +1,7 @@
 const { Todo } = require ('../models/index') ;
 
 class TodoController {
-    static findAll (req, res) {
+    static findAll (req, res, next) {
         
         Todo.findAll ({
             where : {
@@ -41,7 +41,7 @@ class TodoController {
             })
     }
 
-    static findByPk ( req, res) {
+    static findByPk ( req, res, next) {
         let idToFind = req.params.id ;
 
         Todo.findByPk (idToFind)
@@ -100,7 +100,7 @@ class TodoController {
             })
     }
 
-    static destroy (req,res) {
+    static destroy (req,res, next) {
         let idToDelete = req.params.id ;
 
         Todo.findByPk (idToDelete)
@@ -129,9 +129,7 @@ class TodoController {
             })
 
             .catch ( err => {
-                res.status (500).json({
-                    error : `Internal Server Error`
-                })
+                next()
             })
     }
 }
