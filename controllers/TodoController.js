@@ -127,19 +127,16 @@ class TodoController {
                         error : `Not Found`
                     })
                 } else {
-                    let deletedTodo = foundTodo ;
-                    Todo.destroy({
+                    return Todo.destroy({
                         where : {
                             id : idToDelete
                         }
                     })
-                    return deletedTodo
                 }
             })
 
-            .then ( deletedTodo => {
+            .then ( (response) => {
                 res.status (200).json({
-                    data : deletedTodo,
                     message : 'deleted'
                 })
             })
