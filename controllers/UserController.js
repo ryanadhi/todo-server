@@ -17,7 +17,7 @@ class UserController {
                     email : newUser.email
                 }
                 res.status (201).json({
-                    data : response
+                    user : response
                 })
             })
             .catch ( err => {

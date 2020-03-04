@@ -1,15 +1,22 @@
 const { Todo } = require ('../models/index') ;
-const axios = require ('axios').default
+const axios = require ('axios').default ;
+const giphy = axios.create ({
+    baseURL: 'http://api.giphy.com/v1/gifs/'
+})
 
 class TodoController {
     static findAll (req, res, next) {
         
         Todo.findAll ({
             where : {
-                id : req.decoded.id
+                UserId : req.decoded.id
+            },
+            attributes : {
+                exclude : ['createdAt', 'updatedAt']
             }
         }) 
             .then (todos => {
+
                 res.status (200).json({
                     data : todos
                 })
@@ -33,10 +40,6 @@ class TodoController {
         Todo.create (newTodo)
             .then ( todo => {
 
-                const giphy = axios.create ({
-                    baseURL: 'http://api.giphy.com/v1/gifs/'
-                })
-
                 const query = todo.title.replace(/ /g, "+") ;
                 const key = process.env.GIPHY_KEY ;
                 
@@ -45,7 +48,7 @@ class TodoController {
 
             .then ( gif => {
                 res.status(201).json({
-                    imageURL : gif.data.data[0].images.original.url,
+                    imageURL : gif.data.data[0].images.fixed_height_small.url,
                     message : 'success'
                 })
             })

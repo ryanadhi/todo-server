@@ -5,7 +5,7 @@ module.exports = function (err, req, res, next) {
             return el.message
         })
         res.status(400).json({
-            errorMessage : message
+            message : message
         })
     } else {
         const statusCode = err.status || 500 ;
