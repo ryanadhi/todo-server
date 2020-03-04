@@ -6,14 +6,17 @@ const giphy = axios.create ({
 
 class TodoController {
     static findAll (req, res, next) {
-        
+        const status = req.headers.iscomplete ;
+
         Todo.findAll ({
             where : {
-                UserId : req.decoded.id
+                UserId : req.decoded.id,
+                status : status
             },
             attributes : {
                 exclude : ['createdAt', 'updatedAt']
-            }
+            },
+            order : ['due_date']
         }) 
             .then (todos => {
 
@@ -113,6 +116,42 @@ class TodoController {
 
             .catch ( err => {
                 next (err)
+            })
+    }
+
+    static makeItDone (req,res,next){
+        let idToFind = req.params.id ;
+
+        Todo.findByPk (idToFind)
+            .then (todo => {
+                if (todo){
+                    let updateTodo = {
+                        title : todo.dataValues.title,
+                        description : todo.dataValues.description,
+                        status : true,
+                        due_date : todo.dataValues.due_date,
+                        UserId : todo.dataValues.id
+                    }
+                    console.log(updateTodo);
+            
+                    return Todo.update (updateTodo, {
+                        where : {
+                            id : idToUpdate
+                        },
+                        returning: true
+                    })
+
+                } else {
+                    // not found
+                    next ( {
+                        status : 404,
+                        message : 'Not Found'
+                    })
+                }
+            })
+
+            .catch ( err => {
+                next()
             })
     }
 
