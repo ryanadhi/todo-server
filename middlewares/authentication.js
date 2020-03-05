@@ -13,17 +13,20 @@ module.exports = (req,res,next) => {
         })
             .then ( foundUser => {
                 if (foundUser) {
+                    
                     next()
                 } else {
+                    
                     // user not found, please login again
                     next ( {
                         status : 401,
                         message : 'You are not authenticated'
                     })
                 }
+                return null
             })
             .catch ( err => {
-                next ()
+                next(err)
             })
 
     } catch(err) {
