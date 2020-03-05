@@ -131,7 +131,10 @@ class TodoController {
     }
 
     static makeItDone (req,res,next){
+
         let idToFind = req.params.id ;
+
+        console.log(idToFind);
 
         Todo.findByPk (idToFind)
             .then (todo => {
@@ -141,14 +144,13 @@ class TodoController {
                         description : todo.dataValues.description,
                         status : true,
                         due_date : todo.dataValues.due_date,
-                        UserId : todo.dataValues.id
+                        UserId : todo.dataValues.UserId
                     }
             
                     return Todo.update (updateTodo, {
                         where : {
-                            id : idToUpdate
-                        },
-                        returning: true
+                            id : idToFind
+                        }
                     })
 
                 } else {
