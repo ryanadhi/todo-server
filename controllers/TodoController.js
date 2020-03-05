@@ -162,6 +162,12 @@ class TodoController {
                 }
             })
 
+            .then ( (response) => {
+                res.status (200).json({
+                    message : 'updated'
+                })
+            })
+
             .catch ( err => {
                 next(err)
             })
