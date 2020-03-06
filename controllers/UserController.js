@@ -1,6 +1,8 @@
 const { User } = require ('../models/index') ;
 const { verifyPassword } = require ('../helpers/bcrypt') ;
-const { getToken } = require ('../helpers/jwt')
+const { getToken } = require ('../helpers/jwt') ;
+const {OAuth2Client} = require('google-auth-library');
+
 
 class UserController {
     
@@ -17,7 +19,7 @@ class UserController {
                     email : newUser.email
                 }
                 res.status (201).json({
-                    data : response
+                    user : response
                 })
             })
             .catch ( err => {
@@ -71,8 +73,68 @@ class UserController {
             .catch ( err => {
                 next()
             })
+    }
 
+    static googleSignIn (req,res,next){
 
+        const token = req.headers.token ;
+        const CLIENT_ID = process.env.GOOGLE_CLIENTID ;
+        const client = new OAuth2Client(CLIENT_ID);
+
+        async function verify() {
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: CLIENT_ID,
+            });
+            const payload = ticket.getPayload();
+            const email = payload['email'];
+
+            User.findOne ( {
+                where : {
+                    email : email
+                }
+            })
+                .then ( (response)=> {
+
+                    if (response) {
+
+                        const payload = {
+                            id : response.id,
+                            email : email
+                        }
+
+                        const token = getToken (payload)
+    
+                        res.status(200).json({
+                            token : token
+                        })
+
+                    } else {
+
+                        return User.create ({
+                            email : email,
+                            password : process.env.DEFAULT_PASSWORD_GOOGLEUSER
+                        })
+                    }
+                })
+
+                .then ( (createdUser) => {
+
+                    const payload = {
+                        id : createdUser.id,
+                        email : createdUser.email
+                    }
+
+                    const token = getToken (payload)
+
+                    res.status(200).json({
+                        token : token
+                    })
+                })
+          }
+          verify().catch((err)=>{
+              next()
+          });
     }
 }
 

@@ -7,7 +7,6 @@ module.exports = (req,res,next) => {
         }
     })
         .then ( foundTodo => {
-            console.log(req.decoded);
             if (foundTodo.UserId == req.decoded.id){
                 next()
             } else {
@@ -19,6 +18,6 @@ module.exports = (req,res,next) => {
         })
 
         .catch ( err => {
-            next ()
+            next (err)
         })
 }

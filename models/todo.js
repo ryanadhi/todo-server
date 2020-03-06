@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue : false
     },
     due_date: DataTypes.DATE,
-    UserId : DataTypes.INTEGER
+    UserId : DataTypes.INTEGER,
+    urlImage : DataTypes.STRING
   }, {
     validate : {
       titleIsNull (){
