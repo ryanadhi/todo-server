@@ -4,14 +4,21 @@ const giphy = axios.create ({
     baseURL: 'http://api.giphy.com/v1/gifs/'
 })
 
+const pexels = axios.create ({
+    baseURL: 'https://api.pexels.com/v1/',
+    headers : {
+        "Authorization" : process.env.PEXEL_KEY
+    }
+})
+
 class TodoController {
     static findAll (req, res, next) {        
         const status = req.headers.iscomplete ;
         
         Todo.findAll ({
             where : {
-                UserId : req.decoded.id,
-                status : status
+                status : status,
+                UserId : req.decoded.id
             },
             attributes : {
                 exclude : ['createdAt', 'updatedAt']
@@ -37,23 +44,32 @@ class TodoController {
             description : req.body.description,
             status : req.body.status,
             due_date : req.body.due_date,
-            UserId : req.decoded.id
+            UserId : req.decoded.id,
         }
 
-        Todo.create (newTodo)
+        const query = newTodo.title.replace(/ /g, "+") ;
+
+        pexels.get (`/search?query=${query}&per_page=2&page=1`)
+            .then ( (response) => {
+                if (response.data.photos.length === 0) {
+                    newTodo.urlImage = 'https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280'
+                } else {
+                    newTodo.urlImage = response.data.photos[0].src.tiny ;
+
+                }
+                return Todo.create (newTodo)
+            })
+
             .then ( todo => {
-                const query = todo.title.replace(/ /g, "+") ;
                 const key = process.env.GIPHY_KEY ;
                 
-                return giphy.get(`\search?q=${query}&api_key=${key}&limit=2`)
+                return giphy.get(`/search?q=${query}&api_key=${key}&limit=2`)
             })
 
             .then ( gif => {
-
-                console.log(gif.data.data.length);
                 
                 if (gif.data.data.length === 0){
-                    let image = "https://media2.giphy.com/media/2f7RQiiWMJc40/100.gif?cid=0a0cdce491228e22367ca3a6a67dcf60a71b0ed345c524ad&rid=100.gif" ;
+                    let image = "https://media1.giphy.com/media/26xBzu2ogAunL19hS/100.gif?cid=0a0cdce4242cb796098e996c1d9a374f4c94a4cc3e5ca4d8&rid=100.gif" ;
                     res.status(201).json({
                         imageURL : image ,
                         message : 'success'
