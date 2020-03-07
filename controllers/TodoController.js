@@ -121,12 +121,25 @@ class TodoController {
             UserId : req.decoded.id
         }
 
-        Todo.update (updateTodo, {
-            where : {
-                id : idToUpdate
-            },
-            returning: true
+        const query = updateTodo.title.replace(/ /g, "+") ;
+
+        pexels.get (`/search?query=${query}&per_page=2&page=1`)
+        .then ( (response) => {
+            if (response.data.photos.length === 0) {
+                updateTodo.urlImage = 'https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280'
+            } else {
+                updateTodo.urlImage = response.data.photos[0].src.tiny ;
+
+            }
+            return Todo.update (updateTodo, {
+                where : {
+                    id : idToUpdate
+                },
+                returning: true
+            })
         })
+
+
             .then ( updatedTodo => {
                 if (!updateTodo){
                     next ( {

@@ -133,7 +133,7 @@ class UserController {
                 })
           }
           verify().catch((err)=>{
-              next()
+              next(err)
           });
     }
 }

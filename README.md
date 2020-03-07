@@ -62,7 +62,7 @@
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** <br />`{ token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ1c2VyM0BnbWFpbC5jb20iLCJpYXQiOjE1ODMyMjgzOTB9.ifWoYwYPhWsXaaydbMKittQ8ZXHhcY5esgnhb2QdD9M" }`
+    **Content:** <br />`{ token : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" }`
  
 * **Error Response:**
 
@@ -70,6 +70,34 @@
     **Content:** <br />`{ message : "Wrong Email / Password" }`
 
     OR 
+
+  * **Code:** 500 <br />
+    **Content:** <br />`{ error : "Internal Server Error" }`
+
+**Google Sign In**
+----
+  Returns token data for logged in User.
+
+* **URL**
+
+  /users/googleSignIn
+
+* **Method:**
+
+  `POST`
+
+*  **Headers**
+
+   **Required:**
+ 
+   `token=[string]`
+  
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br />`{ token : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" }`
+ 
+* **Error Response:**
 
   * **Code:** 500 <br />
     **Content:** <br />`{ error : "Internal Server Error" }`
@@ -158,28 +186,24 @@
     "data": [
         {
             "id": 1,
-            "title": "Standing",
-            "description": "",
-            "status": false,
-            "due_date": "2020-03-10T00:00:00.000Z",
-            "UserId": 1
-        },
-        {
-            "id": 4,
-            "title": "Flying",
+            "title": "baby dance",
             "description": "",
             "status": false,
             "due_date": "2020-05-10T00:00:00.000Z",
-            "UserId": 1
+            "UserId": 1,
+            "urlImage": "https://images.pexels.com/photos/326278/pexels-photo-326278.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280"
         },
         {
-            "id": 5,
-            "title": "Flyings",
+            "id": 2,
+            "title": "baby dance",
             "description": "",
             "status": false,
             "due_date": "2020-05-10T00:00:00.000Z",
-            "UserId": 1
-        } ] }`
+            "UserId": 1,
+            "urlImage": "https://images.pexels.com/photos/325693/pexels-photo-325693.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280"
+        }
+      ]
+    }`
  
 * **Error Response:**
 
@@ -219,18 +243,17 @@
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** ` {
+    **Content:** `{
     "data": {
-        "id": 47,
-        "title": "Flying High",
+        "id": 1,
+        "title": "baby dance",
         "description": "",
         "status": false,
         "due_date": "2020-05-10T00:00:00.000Z",
         "UserId": 1,
-        "createdAt": "2020-03-04T01:28:34.768Z",
-        "updatedAt": "2020-03-04T01:28:34.768Z"
+        "urlImage": "https://images.pexels.com/photos/326278/pexels-photo-326278.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280"
     }
-}`
+  }`
  
 * **Error Response:**
 
@@ -278,7 +301,7 @@
     ` {"title" : "Read Book",
 	"description" : "Book titled Captain America",
 	"status" : "true",
-    "due_date" : "2020-04-12"
+    "due_date" : "2020-05-10"
     }`
 
 
@@ -288,15 +311,14 @@
     **Content:** <br />`{
     "data": [
         {
-            "id": 49,
-            "title": "Gym",
-            "description": "trial5updated",
-            "status": true,
-            "due_date": "2020-03-13T00:00:00.000Z",
-            "createdAt": "2020-03-04T01:38:03.392Z",
-            "updatedAt": "2020-03-04T01:42:36.743Z",
-            "UserId": 1
-        }
+        "id": 1,
+        "title": "Read Book",
+        "description": "Book titled Captain America",
+        "status": false,
+        "due_date": "2020-05-10T00:00:00.000Z",
+        "UserId": 1,
+        "urlImage": "https://images.pexels.com/photos/326278/pexels-photo-326278.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280"
+    }
     ],
     "message": "updated"
 }`
@@ -350,16 +372,6 @@
 
   * **Code:** 201 <br />
     **Content:** <br />`{
-    "data": {
-        "id": 49,
-        "title": "Gym",
-        "description": "trial5updated",
-        "status": true,
-        "due_date": "2020-03-13T00:00:00.000Z",
-        "UserId": 1,
-        "createdAt": "2020-03-04T01:38:03.392Z",
-        "updatedAt": "2020-03-04T01:42:36.743Z"
-    },
     "message": "deleted"
 }`
  
@@ -372,3 +384,15 @@
 
     * **Code:** 500 <br />
     **Content:** <br />`{ error : "Internal Server Error" }`
+
+
+**3rd Party API Used in this API**
+----
+
+* **Giphy**
+
+  For more information please visit : https://developers.giphy.com/
+
+* **Pexels**
+
+  For more information please visit : https://www.pexels.com/api/
