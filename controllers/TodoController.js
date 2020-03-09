@@ -162,9 +162,6 @@ class TodoController {
     static makeItDone (req,res,next){
 
         let idToFind = req.params.id ;
-
-        console.log(idToFind);
-
         Todo.findByPk (idToFind)
             .then (todo => {
                 if (todo){
